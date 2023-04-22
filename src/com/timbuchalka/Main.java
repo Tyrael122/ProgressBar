@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Main {
-    public static int size = 0;
     public static void main(String[] args) {
         // TODO: Change to use a thread pool for practice.
 
@@ -12,14 +11,12 @@ public class Main {
 
         Queue<Task> taskQueue = new ArrayBlockingQueue<>(capacity);
 
-        // TODO: Make the consumer not run and wait for the creation of a new task.
-        ProgressBar progressBar = new ProgressBar();
-        TaskMonitor taskMonitor = new TaskMonitor(taskQueue, progressBar);
+        TaskMonitor taskMonitor = new TaskMonitor(taskQueue);
 
         List<Consumer> consumers = new ArrayList<>(
                 Arrays.asList(
-                    new Consumer(taskQueue, taskMonitor, progressBar, 0),
-                    new Consumer(taskQueue, taskMonitor, progressBar, 0)
+                    new Consumer(taskQueue, taskMonitor),
+                    new Consumer(taskQueue, taskMonitor)
                 )
         );
 
@@ -34,14 +31,7 @@ public class Main {
 
         printConsumersInfo(consumers);
         printCapacity(capacity);
-
-//        startProgressBarThread(taskQueue, taskMonitor);
     }
-
-//    private static void startProgressBarThread(Queue<Task> taskQueue) {
-//        ProgressBar progressBar = new ProgressBar(taskQueue);
-//        progressBar.start();
-//    }
 
 
     private static void printConsumersInfo(List<Consumer> consumers) {

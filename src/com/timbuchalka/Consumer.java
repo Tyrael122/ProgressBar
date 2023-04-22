@@ -6,12 +6,16 @@ class Consumer extends Thread {
     private final Queue<Task> tasksQueue;
     private final int efficiency;
     private final TaskMonitor taskMonitor;
-    private final ProgressBar progressBar;
 
-    public Consumer(Queue<Task> tasksQueue, TaskMonitor taskMonitor, ProgressBar progressBar, int efficiency) {
+    public Consumer(Queue<Task> tasksQueue, TaskMonitor taskMonitor) {
         this.tasksQueue = tasksQueue;
         this.taskMonitor = taskMonitor;
-        this.progressBar = progressBar;
+        this.efficiency = 0;
+    }
+
+    public Consumer(Queue<Task> tasksQueue, TaskMonitor taskMonitor, int efficiency) {
+        this.tasksQueue = tasksQueue;
+        this.taskMonitor = taskMonitor;
         this.efficiency = efficiency;
     }
 

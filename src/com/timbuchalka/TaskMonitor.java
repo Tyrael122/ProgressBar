@@ -4,15 +4,12 @@ import java.util.Queue;
 
 class TaskMonitor {
     private final Queue<Task> tasksQueue;
-    private final ProgressBar progressBar;
 
-    public TaskMonitor(Queue<Task> tasksQueue, ProgressBar progressBar) {
+    public TaskMonitor(Queue<Task> tasksQueue) {
         this.tasksQueue = tasksQueue;
-        this.progressBar = progressBar;
     }
 
     public void addTask() {
-//        long startTime = System.currentTimeMillis();
         synchronized (tasksQueue) {
             try {
                 Task task = new Task();
@@ -26,10 +23,5 @@ class TaskMonitor {
                 notify();
             } catch (IllegalStateException ignored) {}
         }
-
-//        long endTime = System.currentTimeMillis();
-//
-//        long duration = (endTime - startTime);
-//        System.out.println("Duration (ms): " + duration);
     }
 }

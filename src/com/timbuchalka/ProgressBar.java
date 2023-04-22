@@ -4,16 +4,12 @@ public class ProgressBar {
     private static int tasksAmount = 0;
     private static int totalTaskTime = 0;
 
-    public ProgressBar() {
-    }
-
     public static void addTask() {
         tasksAmount++;
         update();
     }
 
     public static void removeTask() {
-//        System.out.println("\nRemoving task from task bar");
         if (tasksAmount == 0) {
             return;
         }
@@ -27,7 +23,6 @@ public class ProgressBar {
     }
 
     private static void update() {
-//        System.out.println("\nTask amount: " + tasksAmount);
         if (tasksAmount == 0) {
             deleteProgressBar();
             return;
