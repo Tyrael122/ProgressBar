@@ -1,4 +1,4 @@
-package com.timbuchalka;
+package com.timbuchalka.keylisteners;
 
 import javax.swing.JFrame;
 

@@ -2,7 +2,7 @@ package com.timbuchalka;
 
 import java.util.concurrent.*;
 
-class TaskMonitor {
+public class TaskMonitor {
     private final ExecutorService executor;
     private final ProgressBar progressBar = new ProgressBar();
 

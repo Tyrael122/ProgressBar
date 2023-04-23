@@ -1,4 +1,6 @@
-package com.timbuchalka;
+package com.timbuchalka.keylisteners;
+
+import com.timbuchalka.TaskMonitor;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

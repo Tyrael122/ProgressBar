@@ -1,5 +1,8 @@
 package com.timbuchalka;
 
+import com.timbuchalka.keylisteners.KeyListenerFrame;
+import com.timbuchalka.keylisteners.TaskKeyListener;
+
 import java.util.concurrent.*;
 
 public class Main {
