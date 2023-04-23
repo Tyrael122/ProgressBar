@@ -1,55 +1,49 @@
 package com.timbuchalka;
 
-public class ProgressBar {
-    private static int tasksAmount = 0;
-    private static int totalTaskTime = 0;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-    public static void addTask() {
-        tasksAmount++;
-        update();
-    }
+public class ProgressBar implements Runnable {
+    private final Queue<Task> tasksQueue = new ConcurrentLinkedQueue<>();
 
-    public static void removeTask() {
-        if (tasksAmount == 0) {
-            return;
-        }
-        tasksAmount--;
-        update();
-    }
-
-    public static void updateTime() {
-        deleteProgressBar();
-        printProgressBar();
-    }
-
-    private static void update() {
-        if (tasksAmount == 0) {
-            deleteProgressBar();
-            return;
-        }
+    @Override
+    public void run() {
+        int totalTaskTime = getTotalTaskTime();
+        int tasksAmount = tasksQueue.size();
 
         deleteProgressBar();
-        printProgressBar();
+        printProgressBar(tasksAmount, totalTaskTime);
     }
 
-    private static void printProgressBar() {
+    private int getTotalTaskTime() {
+        int totalTaskTime = 0;
+        for (Task task : tasksQueue) {
+            synchronized (task) {
+                int timeToRunTask = task.getTimeToRun();
+                totalTaskTime += timeToRunTask / 1000;
+
+                removeTaskIfRuntimeIsEmpty(task, timeToRunTask);
+            }
+        }
+        return totalTaskTime;
+    }
+
+    private void removeTaskIfRuntimeIsEmpty(Task task, int timeToRunTask) {
+        if (timeToRunTask < 1000) {
+            tasksQueue.remove(task);
+        }
+    }
+
+    public void addTask(Task task) {
+        tasksQueue.add(task);
+    }
+
+    public void printProgressBar(int tasksAmount, int totalTaskTime) {
         System.out.print("O ".repeat(tasksAmount));
-        System.out.print("// Total time: " + totalTaskTime() + "s");
+        System.out.print("// Total time: " + totalTaskTime + "s");
     }
 
-    private static String totalTaskTime() {
-        return String.valueOf(totalTaskTime);
-    }
-
-    private static void deleteProgressBar() {
+    private void deleteProgressBar() {
         System.out.print("\b\b".repeat(100));
-    }
-
-    public static void addTime(long timeToAdd) {
-        totalTaskTime += timeToAdd / 1000;
-    }
-
-    public static void removeTime(int timeToRemove) {
-        totalTaskTime -= timeToRemove / 1000;
     }
 }

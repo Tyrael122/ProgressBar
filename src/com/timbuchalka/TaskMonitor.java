@@ -1,27 +1,22 @@
 package com.timbuchalka;
 
-import java.util.Queue;
+import java.util.concurrent.*;
 
 class TaskMonitor {
-    private final Queue<Task> tasksQueue;
+    private final ExecutorService executor;
+    private final ProgressBar progressBar = new ProgressBar();
 
-    public TaskMonitor(Queue<Task> tasksQueue) {
-        this.tasksQueue = tasksQueue;
+    public TaskMonitor(ExecutorService executor) {
+        this.executor = executor;
+
+        ScheduledExecutorService progressBarScheduler = Executors.newSingleThreadScheduledExecutor();
+        progressBarScheduler.scheduleAtFixedRate(progressBar, 1000, 500, TimeUnit.MILLISECONDS);
     }
 
     public void addTask() {
-        synchronized (tasksQueue) {
-            try {
-                Task task = new Task();
-                tasksQueue.add(task);
+        Task task = new Task();
+        executor.submit(task);
 
-                synchronized (ProgressBar.class) {
-                    ProgressBar.addTask();
-                    ProgressBar.addTime(task.getTimeToRun());
-                }
-
-                notify();
-            } catch (IllegalStateException ignored) {}
-        }
+        progressBar.addTask(task);
     }
 }
